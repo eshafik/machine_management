@@ -37,7 +37,10 @@ class MachineDataLisAPI(ListAPIView):
                 return queryset.filter(id__in=ids, updated_at__gt=time_to_online)
             else:
                 return queryset.filter(id__in=ids, updated_at__lt=time_to_online)
-        if params.get('start'):
+        if not params.get('start'):
+            last_seven_days = timezone.now() - timezone.timedelta(days=7)
+            queryset = queryset.filter(created_at__gt=last_seven_days)
+        else:
             queryset = queryset.filter(Q(created_at__gte=params.get('start')
                                          ) | Q(updated_at__gte=params.get('start')))
         if params.get('end'):
@@ -47,9 +50,6 @@ class MachineDataLisAPI(ListAPIView):
             queryset = queryset.filter(machine_no__in=machines)
         if params.get('machine_status'):
             queryset = queryset.filter(machine_status__iexact=params.get('machine_status'))
-        if not params.get('start'):
-            last_seven_days = timezone.now() - timezone.timedelta(days=7)
-            queryset = queryset.filter(created_at__gt=last_seven_days)
         return queryset
 
 
@@ -57,7 +57,22 @@ class MachineDataAnalyticsAPI(APIView):
     model_name = MachineData
 
     def get(self, request):
-        data = MachineData.objects.values('machine_no').order_by('machine_no').annotate(
+        params = request.query_params.dict()
+
+        queryset = MachineData.objects.all()
+        if not params.get('start'):
+            last_seven_days = timezone.now() - timezone.timedelta(days=7)
+            queryset = queryset.filter(created_at__gt=last_seven_days)
+        else:
+            queryset = queryset.filter(Q(created_at__gte=params.get('start')
+                                         ) | Q(updated_at__gte=params.get('start')))
+        if params.get('end'):
+            queryset = queryset.filter(updated_at__lte=params.get('end'))
+        if params.get('machine_no'):
+            machines = params.get('machine_no').split('-')
+            queryset = queryset.filter(machine_no__in=machines)
+
+        data = queryset.values('machine_no').order_by('machine_no').annotate(
             total_on_time=Sum(Case(When(machine_status='on',
                                         then=F('total_minutes')))),
             total_off_time=Sum(Case(When(machine_status='off',
