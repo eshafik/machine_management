@@ -3,7 +3,7 @@ from django.apps import AppConfig
 
 class AuthorizationsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'apps.users'
+    name = 'apps.user'
 
     def ready(self):
-        import apps.users.signals
+        import apps.user.signals

@@ -7,8 +7,8 @@ from rest_framework.views import APIView
 
 from app_libs.success_codes import SUCCESS_CODE
 from app_libs.error_codes import ERROR_CODE
-from apps.users.models import User
-from apps.users.validations import x_data_validation
+from apps.user.models import User
+from apps.user.validations import x_data_validation
 
 
 # custom json response for page not found

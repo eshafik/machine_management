@@ -10,7 +10,7 @@ from app_libs.error_codes import ERROR_CODE
 class UserToken(ObtainJSONWebToken):
     """
     A custom class for JWT Token
-        URL: /api/v1/users/token/
+        URL: /api/v1/user/token/
         Method: POST
     """
     def post(self, request, *args, **kwargs):
@@ -45,7 +45,7 @@ class UserToken(ObtainJSONWebToken):
 class UserRefreshToken(RefreshJSONWebToken):
     """
     A custom class for JWT Refresh Token
-        URL: /api/v1/users/refresh-token/
+        URL: /api/v1/user/refresh-token/
         Method: POST
     """
 

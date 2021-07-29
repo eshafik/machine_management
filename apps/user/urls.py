@@ -1,6 +1,6 @@
 from django.urls import path
 
-from apps.users.views_internal import UserToken, UserRefreshToken
+from apps.user.views_internal import UserToken, UserRefreshToken
 
 # Put here views here
 urlpatterns = [

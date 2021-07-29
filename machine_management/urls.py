@@ -26,4 +26,4 @@ urlpatterns = [
     path('docs/', include_docs_urls(title='Hello world')),
 ]
 
-handler404 = 'apps.users.views.error404'
+handler404 = 'apps.user.views.error404'

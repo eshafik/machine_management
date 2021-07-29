@@ -14,8 +14,7 @@ from apps.machine.serializers import MachineDataSerializer
 
 class MachineListAPI(APIView):
 
-    authentication_classes = ()
-    permission_classes = ()
+    model_name = Machine
 
     def get(self, request):
         machines = Machine.objects.filter(status=True
@@ -25,8 +24,7 @@ class MachineListAPI(APIView):
 
 
 class MachineDataLisAPI(ListAPIView):
-    authentication_classes = ()
-    permission_classes = ()
+    model_name = MachineData
     serializer_class = MachineDataSerializer
     queryset = MachineData.objects.filter()
 

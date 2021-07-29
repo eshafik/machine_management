@@ -56,7 +56,7 @@ THIRD_PARTY = [
     'corsheaders',
 ]
 SYSTEM_APPS = [
-    'apps.users',
+    'apps.user',
     'apps.machine',
 ]
 
@@ -96,7 +96,7 @@ WSGI_APPLICATION = 'machine_management.wsgi.application'
 # FIREBASE_GET_REFRESH_TOKEN = env("FIREBASE_GET_REFRESH_TOKEN")
 # FIREBASE_WEB_KEY = env("FIREBASE_WEB_KEY")
 
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'user.User'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
@@ -152,7 +152,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-        'apps.users.permissions.UserPermission'
+        'apps.user.permissions.UserPermission'
     ),
     'DEFAULT_RENDERER_CLASSES': (
         # 'rest_framework.renderers.JSONRenderer',
