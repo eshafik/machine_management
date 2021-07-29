@@ -16,7 +16,7 @@ class Machine(models.Model):
 class MachineData(models.Model):
     machine_no = models.PositiveSmallIntegerField(db_index=True)
     machine_status = models.CharField(max_length=10)
-    total_minutes = models.FloatField(null=True, blank=True)
+    total_minutes = models.FloatField(default=5)
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
     updated_at = models.DateTimeField(auto_now=True)
 

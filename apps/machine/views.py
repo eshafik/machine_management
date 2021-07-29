@@ -1,5 +1,5 @@
 from django.utils.decorators import method_decorator
-from django.db.models import Q
+from django.db.models import Q, Case, When, F, Sum, Value, IntegerField
 from django.utils import timezone
 from rest_framework import status
 from rest_framework.response import Response
@@ -13,7 +13,6 @@ from apps.machine.serializers import MachineDataSerializer
 
 
 class MachineListAPI(APIView):
-
     model_name = Machine
 
     def get(self, request):
@@ -52,3 +51,17 @@ class MachineDataLisAPI(ListAPIView):
             last_seven_days = timezone.now() - timezone.timedelta(days=7)
             queryset = queryset.filter(created_at__gt=last_seven_days)
         return queryset
+
+
+class MachineDataAnalyticsAPI(APIView):
+    model_name = MachineData
+
+    def get(self, request):
+        data = MachineData.objects.values('machine_no').order_by('machine_no').annotate(
+            total_on_time=Sum(Case(When(machine_status='on',
+                                        then=F('total_minutes')))),
+            total_off_time=Sum(Case(When(machine_status='off',
+                                         then=F('total_minutes'))))
+        ).annotate(efficiency=(F('total_on_time')*100)/(F('total_on_time')+F('total_off_time')))
+
+        return Response(data=data, status=status.HTTP_200_OK)
