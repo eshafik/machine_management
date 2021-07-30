@@ -1,10 +1,12 @@
 from django.utils import timezone
+from django.contrib.auth import authenticate
 
 from rest_framework.response import Response
 from rest_framework_jwt.settings import api_settings
 from rest_framework_jwt.views import ObtainJSONWebToken, jwt_response_payload_handler, RefreshJSONWebToken
 
 from app_libs.error_codes import ERROR_CODE
+from apps.user.models import User
 
 
 class UserToken(ObtainJSONWebToken):
@@ -32,7 +34,12 @@ class UserToken(ObtainJSONWebToken):
             user = request.user
             token = serializer.object.get('token')
             response_data = jwt_response_payload_handler(token, user, request)
-
+            user = authenticate(username=request.data.get('username'), password=request.data.get('password'))
+            if user:
+                groups = list(user.groups.values_list('name', flat=True))
+            else:
+                groups = []
+            response_data['groups'] = groups
             response = Response(response_data)
             if api_settings.JWT_AUTH_COOKIE:
                 expiration = (timezone.now() + api_settings.JWT_EXPIRATION_DELTA)
