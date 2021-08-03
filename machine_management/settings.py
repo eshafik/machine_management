@@ -177,7 +177,7 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'rest_framework.views.exception_handler'
 }
 if not DEBUG:
-    REST_FRAMEWORK['EXCEPTION_HANDLER'] = 'base.exceptions_handler.custom_exception_handler'
+    REST_FRAMEWORK['EXCEPTION_HANDLER'] = 'app_libs.exceptions_handler.custom_exception_handler'
 
 # Logger setup
 logging.config.dictConfig(LOGGING)
