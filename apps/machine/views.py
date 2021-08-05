@@ -10,21 +10,13 @@ from app_libs.custom_pagination import CustomPagination
 from app_libs.success_codes import SUCCESS_CODE
 from app_libs.error_codes import ERROR_CODE
 from apps.machine.models import Machine, MachineData
-from apps.machine.serializers import MachineDataSerializer
+from apps.machine.serializers import MachineDataSerializer, MachineListSerializer
 
 
-class MachineListAPI(APIView):
+class MachineListAPI(ListAPIView):
     model_name = Machine
-
-    def get(self, request):
-        machines = Machine.objects.filter(status=True
-                                          ).values('name', 'machine_no') or {"message": "Status OK",
-                                                                             "success": True, "data": []}
-        paginator = CustomPagination()
-        page = paginator.paginate_queryset(machines.get('data'), request)
-        if page is not None:
-            return paginator.get_paginated_response(page)
-        return Response(data=machines, status=status.HTTP_200_OK)
+    serializer_class = MachineListSerializer
+    queryset = Machine.objects.filter(status=True)
 
 
 class MachineDataLisAPI(ListAPIView):
