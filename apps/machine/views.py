@@ -78,9 +78,11 @@ class MachineDataAnalyticsAPI(APIView):
         ).annotate(efficiency=(F('total_on_time')*100)/(F('total_on_time')+F('total_off_time')))
         [d.update({'efficiency': 100}) for d in data if not d.get("total_off_time")]
 
-        if params.get("is_order") == 'true':
-            print("sorting....")
-            data = sorted(data, key=lambda k: k['efficiency'], reverse=True)
+        if params.get("order"):
+            if params.get('order').lower() == 'desc':
+                data = sorted(data, key=lambda k: k['efficiency'], reverse=True)
+            else:
+                data = sorted(data, key=lambda k: k['efficiency'], reverse=False)
         return Response(data=data, status=status.HTTP_200_OK)
 
 
