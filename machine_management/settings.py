@@ -194,9 +194,9 @@ CORS_ALLOW_METHODS = (
 )
 # CORS CONFIG END #
 
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000',
-)
+# CORS_ORIGIN_WHITELIST = (
+#     'http://localhost:3000',
+# )
 
 # DJANGO JWT SETTINGS
 JWT_AUTH = {
